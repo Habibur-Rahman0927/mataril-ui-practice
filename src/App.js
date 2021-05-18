@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Footer from './Component/Footer/Footer';
+import Header from './Component/Header/Header';
+import News from './Component/News/News';
 
 function App() {
+  const [newshow, setNewshow] = useState([]);
+  useEffect(() => {
+    fetch('https://newsapi.org/v2/everything?q=tesla&from=2021-04-18&sortBy=publishedAt&apiKey=716da15039824847acf1ae64cebed122')
+      .then(res => res.json())
+      .then(data => setNewshow(data.articles))
+      .catch(error => console.log(error))
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header></Header>
+      {
+        console.log(newshow)
+      }
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {
+            newshow.map(newshow => <News newshow={newshow}></News>)
+          }
+      </div>
+      <Footer></Footer>
+
     </div>
   );
 }
